@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const connection = require("../config");
+const connection = require("../config/connection");
 const dotenv = require("dotenv");
 
 dotenv.config();
