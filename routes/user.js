@@ -43,6 +43,8 @@ router.get("/", (req, res) => {
     if (err) {
       res.sendStatus(err);
     } else {
+      res.header("Access-Control-Expose-Headers", "X-Total-Count");
+      res.header("X-Total-Count", results.length);
       res.json(results);
     }
   });
