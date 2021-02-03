@@ -4,22 +4,24 @@ var router = express.Router();
 var MailConfig = require("../config/email");
 var gmailTransport = MailConfig.GmailTransport;
 
-router.get("/send", (req, res, next) => {
-  const { email, message } = req.body;
+router.post("/send", (req, res, next) => {
+  const { to, message, subject } = req.body;
+  console.log(req.body);
   let HelperOptions = {
     from: `"Pol Casabayo" ${process.env.GMAIL_USER_NAME}`,
-    to: email,
-    subject: "Hellow world!",
+    to: to,
+    subject: subject,
     text: message,
   };
   gmailTransport.sendMail(HelperOptions, (error, info) => {
     if (error) {
       console.log(error);
       res.json(error);
+    } else {
+      console.log("email has been sent");
+      console.log(info);
+      res.json(info);
     }
-    console.log("email is send");
-    console.log(info);
-    res.json(info);
   });
 });
 
