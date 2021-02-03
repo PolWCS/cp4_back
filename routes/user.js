@@ -26,7 +26,7 @@ router.post("/signin", (req, res) => {
             jwt.sign({ results }, process.env.SECRET_KEY_JWT, (err, token) => {
               res.status(200).json({
                 id: results[0].id,
-                name: results[0].last_name,
+                fullName: `${results[0].firstname} ${results[0].lastname}`,
                 token,
               });
             });
@@ -72,8 +72,8 @@ router.post("/", (req, res) => {
   const dataUser = {
     email: req.body.email,
     password: hash,
-    last_name: req.body.lastname,
-    first_name: req.body.firstname,
+    lastname: req.body.lastname,
+    firstname: req.body.firstname,
   };
 
   connection.query("INSERT INTO user SET ?", [dataUser], (err, results) => {
