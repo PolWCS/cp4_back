@@ -20,7 +20,7 @@ router.get("/", (req, res) => {
 
 router.get("/replies", (req, res) => {
   connection.query(
-    "SELECT * FROM history WHERE DATEDIFF(NOW(), date) > 7",
+    "SELECT h.id, h.date, h.reply, h.user_id, h.contact_book_id, h.cv_id, h.mm_id, h.message, h.subject, cb.email AS contact_book_email, cb.firm AS contact_book_firm , cv.url AS cv_url, mm.url AS mm_url FROM history AS h JOIN contact_book AS cb ON h.contact_book_id=cb.id JOIN curriculum_vitae AS cv ON cv.id=h.cv_id JOIN motivation_mail AS mm ON mm.id=h.mm_id WHERE DATEDIFF(NOW(), date) > 7 AND reply < 1",
     (err, results) => {
       if (err) {
         res.sendStatus(500);
