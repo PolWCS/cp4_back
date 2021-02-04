@@ -18,6 +18,19 @@ router.get("/", (req, res) => {
   });
 });
 
+router.get("/replies", (req, res) => {
+  connection.query(
+    "SELECT * FROM history WHERE DATEDIFF(NOW(), date) > 7",
+    (err, results) => {
+      if (err) {
+        res.sendStatus(500);
+      } else {
+        res.status(200).json(results);
+      }
+    }
+  );
+});
+
 // Récupération d'une donnée
 router.get("/:id", (req, res) => {
   const idParams = req.params.id;
@@ -38,26 +51,22 @@ router.get("/:id", (req, res) => {
 router.post("/", (req, res) => {
   const data = req.body;
 
-  connection.query(
-    "INSERT INTO history SET ?",
-    data,
-    (err, results) => {
-      if (err) {
-        res.sendStatus(err);
-      } else {
-        connection.query(
-          "SELECT * FROM history WHERE id = ?",
-          results.insertId,
-          (err2, records) => {
-            if (err2) {
-              return res.sendStatus(500);
-            }
-            res.status(201).json(records[0]);
+  connection.query("INSERT INTO history SET ?", data, (err, results) => {
+    if (err) {
+      res.sendStatus(err);
+    } else {
+      connection.query(
+        "SELECT * FROM history WHERE id = ?",
+        results.insertId,
+        (err2, records) => {
+          if (err2) {
+            return res.sendStatus(500);
           }
-        );
-      }
+          res.status(201).json(records[0]);
+        }
+      );
     }
-  );
+  });
 });
 
 // Modification d'une donnée
