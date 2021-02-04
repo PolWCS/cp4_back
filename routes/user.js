@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const connection = require("../config/connection");
-const dotenv = require("dotenv");
+// const dotenv = require("dotenv");
 
-dotenv.config();
+// dotenv.config();
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");

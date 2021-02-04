@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const connection = require("../config/connection");
-const dotenv = require("dotenv");
+// const dotenv = require("dotenv");
 
-dotenv.config();
+// dotenv.config();
 
 // Récupération d'une liste
 router.get("/", (req, res) => {
@@ -99,6 +99,21 @@ router.delete("/:id", (req, res) => {
         res.sendStatus(err);
       } else {
         res.status(200).send("Element deleted");
+      }
+    }
+  );
+});
+
+router.post("/urlSearch", (req, res) => {
+  const { url } = req.body;
+  connection.query(
+    "SELECT * FROM motivation_mail WHERE url = ?",
+    url,
+    (err, results) => {
+      if (err) {
+        res.sendStatus(500);
+      } else {
+        res.status(200).json(results[0]);
       }
     }
   );
